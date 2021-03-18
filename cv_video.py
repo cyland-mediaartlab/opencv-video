@@ -1,6 +1,13 @@
 import numpy as np
 import cv2 as cv
 
+target = [
+    [100, 100],
+    [400, 400],
+    [200, 400],
+    [500, 100],
+]
+
 cap = cv.VideoCapture('Hambleton.mp4')
 while cap.isOpened():
     ret, frame = cap.read()
@@ -10,15 +17,14 @@ while cap.isOpened():
         break
 
     height, width = frame.shape[:2]
+
     frame = cv.resize(frame, (int(0.5*width), int(0.5*height)), interpolation = cv.INTER_CUBIC)
+    height, width = frame.shape[:2]
     # gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
 
-    target = [
-        [100, 100],
-        [400, 500],
-        [200, 500],
-        [500, 100],
-    ]
+    target[0][0] += 1
+    if target[0][0] > 400:
+        target[0][0] = 0
 
     pts1 = np.float32([[0, 0], [width, height], [0, height], [width, 0]])
     pts2 = np.float32(target)
